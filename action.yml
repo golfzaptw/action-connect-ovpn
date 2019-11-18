@@ -1,0 +1,36 @@
+name: "Connect-VPN"
+description: "Connect VPN"
+inputs:
+  USERNAME:
+    description: "Username for access vpn"
+    required: false
+  PASSWORD:
+    description: "Password for access vpn"
+    required: false
+  TLS_KEY:
+    description: "User key for access vpn"
+    required: false
+  PING_URL:
+    description: "For check success or fail"
+    required: true
+  CA_CRT:
+    description: "Certificate for access vpn"
+    required: true
+    default: ""
+  USER_CRT:
+    description: "User cert for access vpn"
+    required: true
+  USER_KEY:
+    description: "User key for access vpn"
+    required: true
+    default: ""
+  FILE_OVPN:
+    description: "Location file open vpn"
+    required: true
+    default: ""
+outputs:
+  STATUS:
+    description: "Status for check connect vpn"
+runs:
+  using: "node12"
+  main: "dist/index.js"
