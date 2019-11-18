@@ -1,7 +1,8 @@
 name: "Connect-VPN"
 description: "Connect VPN"
-icon: "cast"
-color: "green"
+branding:
+  icon: "cast"
+  color: "green"
 inputs:
   USERNAME:
     description: "Username for access vpn"
