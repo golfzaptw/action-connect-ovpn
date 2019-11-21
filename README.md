@@ -2,6 +2,10 @@
 
 This action is a connect ovpn script
 
+## Example file `.ovpn` to connect vpn
+
+[Test.ovpn](./test.ovpn)
+
 ## Inputs
 
 ### `FILE_OVPN`, `PING_URL`
