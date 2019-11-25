@@ -1238,7 +1238,7 @@ try {
   }
 
   const createFile = (filename, data) => {
-    if (shell.exec('echo ' + data + ' | base64 -d > ' + filename).code !== 0) {
+    if (shell.exec(`'echo ${data} | base64 -d > ${filename}'`).code !== 0) {
       core.setFailed(`Can't create file ${filename}`)
       shell.exit(1)
     }
