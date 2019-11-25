@@ -1241,14 +1241,10 @@ try {
   }
 
   if (
-    shell.exec(`  cat > user.txt << EOF
+    shell.exec(`cat > user.txt << EOF
 ${username}
 ${password}`).code !== 0
   ) {
-    core.setFailed(`Can't create file`)
-    shell.exit(1)
-  }
-  if (shell.exec('EOF').code !== 0) {
     core.setFailed(`Can't create file`)
     shell.exit(1)
   }
