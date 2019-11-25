@@ -4,11 +4,8 @@ branding:
   icon: "cast"
   color: "green"
 inputs:
-  USERNAME:
-    description: "Username for access vpn"
-    required: false
-  PASSWORD:
-    description: "Password for access vpn"
+  SECRET_ACCESS:
+    description: "Username and password for access vpn"
     required: false
   TLS_KEY:
     description: "User key for access vpn"

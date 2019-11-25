@@ -6,8 +6,7 @@ const core = require('@actions/core')
 
 try {
   // Get input defined in action metadata file
-  const username = core.getInput('USERNAME')
-  const password = core.getInput('PASSWORD')
+  const secret = core.getInput('SECRET_ACCESS')
   const pingURL = core.getInput('PING_URL')
   const caCRT = core.getInput('CA_CRT')
   const userCRT = core.getInput('USER_CRT')
@@ -31,16 +30,7 @@ try {
     }
   }
 
-  if (shell.exec(`echo ${username} >> secret.txt`).code !== 0) {
-    core.setFailed(`Can't create username in file secret.txt`)
-    shell.exit(1)
-  }
-
-  if (shell.exec(`echo ${password} >> secret.txt`).code !== 0) {
-    core.setFailed(`Can't create password in file secret.txt`)
-    shell.exit(1)
-  }
-
+  createFile('secret.txt', secret)
   createFile('ca.crt', caCRT)
   createFile('user.crt', userCRT)
   createFile('user.key', userKEY)
@@ -52,7 +42,7 @@ try {
   addPermission('user.key')
   addPermission('tls.key')
 
-  if (shell.exec(`sudo openvpn --config '${finalPath}' --daemon`).code !== 0) {
+  if (shell.exec(`sudo openvpn --config ${finalPath} --daemon`).code !== 0) {
     core.setFailed(`Can't setup config ovpn`)
     shell.exit(1)
   }
