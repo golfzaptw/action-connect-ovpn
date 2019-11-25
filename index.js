@@ -38,7 +38,6 @@ try {
         process.exit(1)
       }
     }
-    return true
   }
 
   if (secret !== '') {
@@ -48,11 +47,9 @@ try {
     createFile('tls.key', tlsKey)
   }
 
-  if (createFile('ca.crt', process.env.CA_CRT)) {
-    if (createFile('user.crt', process.env.USER_CRT)) {
-      createFile('user.key', process.env.USER_KEY)
-    }
-  }
+  createFile('ca.crt', process.env.CA_CRT)
+  createFile('user.crt', process.env.USER_CRT)
+  createFile('user.key', process.env.USER_KEY)
 
   if (exec(`sudo openvpn --config ${finalPath} --daemon`).code !== 0) {
     core.setFailed(`Can't setup config ${finalPath}`)
