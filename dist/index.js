@@ -1223,15 +1223,12 @@ try {
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
   const createFile = (filename, data) => {
-    if (shell.exec('echo ' + data + ' | base64 -d >> ' + filename).code !== 0) {
-      core.setFailed(`Can't create file`)
-      shell.exit(1)
-    }
+    shell.exec('echo ' + data + ' | base64 -d >> ' + filename)
   }
 
   const addPermission = filename => {
     if (shell.chmod(600, filename).code !== 0) {
-      core.setFailed(`Can't add permission`)
+      core.setFailed(`Can't add permission in file ${filename}`)
       shell.exit(1)
     }
   }
