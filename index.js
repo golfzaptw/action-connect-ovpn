@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env node
 
 const path = require('path')
 const shell = require('shelljs')
@@ -20,9 +20,6 @@ try {
       core.setFailed(`Can't create ${filename}`)
       shell.exit(1)
     }
-  }
-
-  const addPermission = filename => {
     if (shell.chmod(600, filename).code !== 0) {
       core.setFailed(`Can't add permission ${filename}`)
       shell.exit(1)
@@ -53,16 +50,6 @@ try {
   createFile('ca.crt', process.env.CA_CRT)
   createFile('user.crt', process.env.USER_CRT)
   createFile('user.key', process.env.USER_KEY)
-
-  if (secret !== '') {
-    addPermission('secret.txt')
-  }
-  if (tlsKey !== '') {
-    addPermission('tls.key')
-  }
-  addPermission('ca.crt')
-  addPermission('user.crt')
-  addPermission('user.key')
 
   if (shell.exec(`sudo openvpn --config ${finalPath} --daemon`).code !== 0) {
     core.setFailed(`Can't setup config ovpn`)
