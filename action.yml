@@ -19,18 +19,16 @@ inputs:
   CA_CRT:
     description: "Certificate for access vpn"
     required: true
-    default: ""
   USER_CRT:
     description: "User cert for access vpn"
     required: true
   USER_KEY:
     description: "User key for access vpn"
     required: true
-    default: ""
   FILE_OVPN:
     description: "Location file open vpn"
     required: true
-    default: ""
+    default: "./config.ovpn"
 outputs:
   STATUS:
     description: "Status for check connect vpn"
