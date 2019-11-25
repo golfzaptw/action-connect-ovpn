@@ -14,22 +14,22 @@ try {
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
   if (process.env.CA_CRT == null) {
-    core.setFailed(`Can't get ca cert`)
+    core.setFailed(`Can't get ca cert please add CA_CRT in secret`)
     process.exit(1)
   }
 
   if (process.env.USER_CRT == null) {
-    core.setFailed(`Can't get user cert`)
+    core.setFailed(`Can't get user cert please add USER_CRT in secret`)
     process.exit(1)
   }
 
   if (process.env.USER_KEY == null) {
-    core.setFailed(`Can't get user key`)
+    core.setFailed(`Can't get user key please add USER_KEY in secret`)
     process.exit(1)
   }
 
   const createFile = (filename, data) => {
-    if (shell.exec(`'echo ${data} | base64 -d > ${filename}'`).code !== 0) {
+    if (shell.exec('echo ' + data + ' | base64 -d > ' + filename).code !== 0) {
       core.setFailed(`Can't create file ${filename}`)
       shell.exit(1)
     }
@@ -43,9 +43,9 @@ try {
   }
 
   createFile('secret.txt', secret)
-  createFile('ca.crt', process.env.CA_CRT)
-  createFile('user.crt', process.env.USER_CRT)
-  createFile('user.key', process.env.USER_KEY)
+  createFile('ca.crt', `${process.env.CA_CRT}`)
+  createFile('user.crt', `${process.env.USER_CRT}`)
+  createFile('user.key', `${process.env.USER_KEY}`)
   createFile('tls.key', tlsKey)
 
   addPermission('secret.txt')
