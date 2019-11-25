@@ -41,4 +41,4 @@ jobs:
           USER_KEY: ${{ secrets.USER_KEY }}
       - name: kill vpn
         if: always()
-        run: sudo killall openvpn
+        run: ls -la && sudo killall openvpn
