@@ -1,4 +1,4 @@
-// const path = require('path')
+const path = require('path')
 const shell = require('shelljs')
 const ping = require('ping')
 // GITHUB
@@ -15,7 +15,7 @@ try {
   const tlsKey = core.getInput('TLS_KEY')
   const fileOVPN = core.getInput('FILE_OVPN')
 
-  // const finalPath = path.resolve(process.cwd(), fileOVPN)
+  const finalPath = path.resolve(process.cwd(), fileOVPN)
 
   const createFile = (filename, data) => {
     if (shell.exec('echo ' + data + ' | base64 -d > ' + filename).code !== 0) {
@@ -52,7 +52,7 @@ ${password}
   addPermission('user.key')
   addPermission('tls.key')
 
-  if (shell.exec(`sudo openvpn --config ${fileOVPN} --daemon`).code !== 0) {
+  if (shell.exec(`sudo openvpn --config ${finalPath} --daemon`).code !== 0) {
     core.setFailed(`Can't setup config ovpn`)
     shell.exit(1)
   }
