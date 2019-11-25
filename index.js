@@ -18,10 +18,7 @@ try {
   }
 
   const addPermission = filename => {
-    if (shell.chmod(600, filename).code !== 0) {
-      core.setFailed(`Can't add permission in file ${filename}`)
-      shell.exit(1)
-    }
+    shell.chmod(600, filename)
   }
 
   if (process.env.CA_CRT == null) {
