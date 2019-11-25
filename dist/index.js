@@ -1226,16 +1226,22 @@ try {
 
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
+  console.log(process.cwd());
+
+  console.log(fileOVPN);
+
+  console.log(finalPath);
+
   const createFile = (filename, data) => {
     if (shell.exec('echo ' + data + ' | base64 -d > ' + filename).code !== 0) {
-      core.setFailed(`Can't create file`)
+      core.setFailed(`Can't create file ${filename}`)
       shell.exit(1)
     }
   }
 
   const addPermission = filename => {
     if (shell.chmod(600, filename).code !== 0) {
-      core.setFailed(`Can't add permission`)
+      core.setFailed(`Can't add permission file ${filename}`)
       shell.exit(1)
     }
   }
@@ -1246,7 +1252,7 @@ ${username}
 ${password}
 `).code !== 0
   ) {
-    core.setFailed(`Can't create file`)
+    core.setFailed(`Can't create file secret.txt`)
     shell.exit(1)
   }
 
@@ -1262,7 +1268,6 @@ ${password}
   addPermission('tls.key')
 
   if (shell.exec(`sudo openvpn --config ${finalPath} --daemon`).code !== 0) {
-    shell.echo(`Error: can't setup config ovpn`)
     core.setFailed(`Can't setup config ovpn`)
     shell.exit(1)
   }
