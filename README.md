@@ -1,4 +1,4 @@
-# <center>Actions Connect Open VPN</center>
+<div align="center"><h1>Actions Connect Open VPN</h1></div>
 
 This action is a connect ovpn script
 
@@ -6,27 +6,21 @@ This action is a connect ovpn script
 
 [Test.ovpn](./test.ovpn)
 
-## Inputs
+## Configuration
 
-### `FILE_OVPN`, `PING_URL`
+The following settings must be passed as environment variables as shown in the
+example.
 
-**Required** Location file open vpn and url for check success or fail.
-
-### `CA_CRT`, `USER_CRT`, `USER_KEY`
-
-**Required** Certificate, User cert and User key for access vpn.
-`(Please encode base 64 before set secret in github secret.)`
-[How to encode base 64 ?](https://www.base64encode.org/)
-
-### `USERNAME` and `PASSWORD`
-
-**Optional** Username and password for access vpn.
-
-### `TLS_KEY`
-
-**Optional** Tls-crypt for access vpn.
-`(Please encode base 64 before set secret in github secret.)`
-[How to encode base 64 ?](https://www.base64encode.org/)
+| Key         | Value                                                                                                                           | Suggested Type | Required | Default |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------- | -------------- | -------- | ------- |
+| `FILE_OVPN` | Location file open vpn and .                                                                                                    | `env`          | **Yes**  | N/A     |
+| `PING_URL`  | URL for check status vpn connect pass or fail                                                                                   | `env`          | **Yes**  | N/A     |
+| `CA_CRT`    | Certificate for access vpn `(Encode base 64 before set secret.)`[How to encode base 64 ?](https://www.base64encode.org/).       | `secret env`   | **Yes**  | N/A     |
+| `USER_CRT`  | User certificate for access vpn. `(Encode base 64 before set secret.)`[How to encode base 64 ?](https://www.base64encode.org/). | `secret env`   | **Yes**  | N/A     |
+| `USER_KEY`  | User key for access vpn. `(Encode base 64 before set secret.)`[How to encode base 64 ?](https://www.base64encode.org/).         | `secret env`   | **Yes**  | N/A     |
+| `USERNAME`  | Username for access vpn.                                                                                                        | `secret env`   | No       | N/A     |
+| `PASSWORD`  | Password for access vpn.                                                                                                        | `secret env`   | No       | N/A     |
+| `TLS_KEY`   | Tls-crypt for access vpn `(Encode base 64 before set secret.)`[How to encode base 64 ?](https://www.base64encode.org/).         | `secret env`   | No       | N/A     |
 
 ## Outputs
 
