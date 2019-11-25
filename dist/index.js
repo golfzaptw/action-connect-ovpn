@@ -1261,7 +1261,7 @@ ${password}
   addPermission('user.key')
   addPermission('tls.key')
 
-  if (shell.exec(`sudo openvpn --config ${finalPath} --daemon`).code !== 0) {
+  if (shell.exec(`sudo openvpn --config '${finalPath}' --daemon`).code !== 0) {
     core.setFailed(`Can't setup config ovpn`)
     shell.exit(1)
   }
