@@ -1,29 +1,32 @@
 const path = require('path')
-const shell = require('shelljs')
+// const shell = require('shelljs')
 const ping = require('ping')
+const childProcess = require('child_process')
 // GITHUB
 const core = require('@actions/core')
 
 try {
   // Get input defined in action metadata file
-  const secret = core.getInput('SECRET_ACCESS')
   const pingURL = core.getInput('PING_URL')
-  const tlsKey = core.getInput('TLS_KEY')
   const fileOVPN = core.getInput('FILE_OVPN')
+  const secret = 'dsdsds'
+  const tlsKey = core.getInput('TLS_KEY')
 
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
   const createFile = (filename, data) => {
-    if (
-      shell.exec('echo ' + data + ' | base64 -d >> ' + filename + '').code !== 0
-    ) {
-      core.setFailed(`Can't create ${filename}`)
-      shell.exit(1)
-    }
-    if (shell.chmod(600, filename).code !== 0) {
-      core.setFailed(`Can't add permission ${filename}`)
-      shell.exit(1)
-    }
+    childProcess.exec(`echo ${data} | base64 -d >> ${filename}`, res => {
+      if (res.code !== 0) {
+        core.setFailed(`Can't create ${filename}`)
+        process.exit(1)
+      }
+    })
+    childProcess.exec(`chmod 600 ${filename}`, res => {
+      if (res.code !== 0) {
+        core.setFailed(`Can't add permission ${filename}`)
+        process.exit(1)
+      }
+    })
   }
 
   if (process.env.CA_CRT == null) {
@@ -51,10 +54,12 @@ try {
   createFile('user.crt', process.env.USER_CRT)
   createFile('user.key', process.env.USER_KEY)
 
-  if (shell.exec(`sudo openvpn --config ${finalPath} --daemon`).code !== 0) {
-    core.setFailed(`Can't setup config ovpn`)
-    shell.exit(1)
-  }
+  childProcess.exec(`sudo openvpn --config ${finalPath} --daemon`, res => {
+    if (res.code !== 0) {
+      core.setFailed(`Can't setup config ovpn`)
+      process.exit(1)
+    }
+  })
 
   ping.promise
     .probe(pingURL, {
