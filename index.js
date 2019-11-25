@@ -30,7 +30,9 @@ try {
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
   const createFile = (filename, data) => {
-    exec('echo ' + data + ' | base64 -d >> ' + filename, err => {
+    const buff = Buffer.from(data, 'base64')
+    const text = buff.toString('utf-8')
+    exec('echo ' + text + ' >> ' + filename, err => {
       if (err !== null) {
         core.setFailed('exec error: ' + err)
         process.exit(1)
