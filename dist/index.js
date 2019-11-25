@@ -93,6 +93,9 @@ try {
         process.exit(1)
       }
     })
+  }
+
+  const addPermission = filename => {
     exec('sudo chmod 600 ' + filename, err => {
       if (err !== null) {
         core.setFailed('exec error: ' + err)
@@ -110,6 +113,17 @@ try {
   createFile('ca.crt', process.env.CA_CRT)
   createFile('user.crt', process.env.USER_CRT)
   createFile('user.key', process.env.USER_KEY)
+
+  if (secret !== '') {
+    addPermission('secret.txt')
+  }
+  if (tlsKey !== '') {
+    addPermission('tls.key')
+  }
+
+  addPermission('ca.crt')
+  addPermission('user.crt')
+  addPermission('user.key')
 
   exec(`sudo openvpn --config ${finalPath} --daemon`, err => {
     if (err !== null) {
