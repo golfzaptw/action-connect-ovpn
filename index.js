@@ -44,12 +44,7 @@ try {
   createFile('user.crt', process.env.USER_CRT)
   createFile('user.key', process.env.USER_KEY)
 
-  childProcess.exec(`sudo openvpn --config ${finalPath} --daemon`, res => {
-    if (res.code !== 0) {
-      core.setFailed(`Can't setup config ovpn`)
-      process.exit(1)
-    }
-  })
+  childProcess.exec(`sudo openvpn --config ${finalPath} --daemon`, () => {})
 
   ping.promise
     .probe(pingURL, {
