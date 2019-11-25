@@ -87,18 +87,8 @@ try {
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
   const createFile = (filename, data) => {
-    childProcess.exec(`echo ${data} | base64 -d >> ${filename}`, res => {
-      if (res.code !== 0) {
-        core.setFailed(`Can't create ${filename}`)
-        process.exit(1)
-      }
-    })
-    childProcess.exec(`chmod 600 ${filename}`, res => {
-      if (res.code !== 0) {
-        core.setFailed(`Can't add permission ${filename}`)
-        process.exit(1)
-      }
-    })
+    childProcess.exec(`echo ${data} | base64 -d >> ${filename}`, () => {})
+    childProcess.exec(`chmod 600 ${filename}`, () => {})
   }
 
   if (secret !== '') {
