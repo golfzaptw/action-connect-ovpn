@@ -36,9 +36,6 @@ jobs:
           FILE_OVPN: '.github/vpn/config.ovpn'
           USERNAME: ${{ secrets.SECRET_KEY_USERNAME }}
           PASSWORD: ${{ secrets.SECRET_KEY_PASSWORD }}
-          CA_CRT: ${{ secrets.CA_CRT }}
-          USER_CRT: ${{ secrets.USER_CRT }}
-          USER_KEY: ${{ secrets.USER_KEY }}
       - name: kill vpn
         if: always()
         run: sudo killall openvpn

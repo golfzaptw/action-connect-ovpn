@@ -1215,16 +1215,27 @@ const core = __webpack_require__(470)
 
 try {
   // Get input defined in action metadata file
-  const username = core.getInput('USERNAME')
-  const password = core.getInput('PASSWORD')
+  const secret = core.getInput('SECRET_ACCESS')
   const pingURL = core.getInput('PING_URL')
-  const caCRT = core.getInput('CA_CRT')
-  const userCRT = core.getInput('USER_CRT')
-  const userKEY = core.getInput('USER_KEY')
   const tlsKey = core.getInput('TLS_KEY')
   const fileOVPN = core.getInput('FILE_OVPN')
 
   const finalPath = path.resolve(process.cwd(), fileOVPN)
+
+  if (process.env.CA_CRT == null) {
+    core.setFailed(`Can't get ca cert`)
+    process.exit(1)
+  }
+
+  if (process.env.USER_CRT == null) {
+    core.setFailed(`Can't get user cert`)
+    process.exit(1)
+  }
+
+  if (process.env.USER_KEY == null) {
+    core.setFailed(`Can't get user key`)
+    process.exit(1)
+  }
 
   const createFile = (filename, data) => {
     if (shell.exec('echo ' + data + ' | base64 -d > ' + filename).code !== 0) {
@@ -1240,19 +1251,10 @@ try {
     }
   }
 
-  if (shell.exec(`echo ${username} >> secret.txt`).code !== 0) {
-    core.setFailed(`Can't create username in file secret.txt`)
-    shell.exit(1)
-  }
-
-  if (shell.exec(`echo ${password} >> secret.txt`).code !== 0) {
-    core.setFailed(`Can't create password in file secret.txt`)
-    shell.exit(1)
-  }
-
-  createFile('ca.crt', caCRT)
-  createFile('user.crt', userCRT)
-  createFile('user.key', userKEY)
+  createFile('secret.txt', secret)
+  createFile('ca.crt', process.env.CA_CRT)
+  createFile('user.crt', process.env.USER_CRT)
+  createFile('user.key', process.env.USER_KEY)
   createFile('tls.key', tlsKey)
 
   addPermission('secret.txt')
@@ -1261,7 +1263,7 @@ try {
   addPermission('user.key')
   addPermission('tls.key')
 
-  if (shell.exec(`sudo openvpn --config '${finalPath}' --daemon`).code !== 0) {
+  if (shell.exec(`sudo openvpn --config ${finalPath} --daemon`).code !== 0) {
     core.setFailed(`Can't setup config ovpn`)
     shell.exit(1)
   }

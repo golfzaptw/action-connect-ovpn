@@ -8,13 +8,25 @@ try {
   // Get input defined in action metadata file
   const secret = core.getInput('SECRET_ACCESS')
   const pingURL = core.getInput('PING_URL')
-  const caCRT = core.getInput('CA_CRT')
-  const userCRT = core.getInput('USER_CRT')
-  const userKEY = core.getInput('USER_KEY')
   const tlsKey = core.getInput('TLS_KEY')
   const fileOVPN = core.getInput('FILE_OVPN')
 
   const finalPath = path.resolve(process.cwd(), fileOVPN)
+
+  if (process.env.CA_CRT == null) {
+    core.setFailed(`Can't get ca cert`)
+    process.exit(1)
+  }
+
+  if (process.env.USER_CRT == null) {
+    core.setFailed(`Can't get user cert`)
+    process.exit(1)
+  }
+
+  if (process.env.USER_KEY == null) {
+    core.setFailed(`Can't get user key`)
+    process.exit(1)
+  }
 
   const createFile = (filename, data) => {
     if (shell.exec('echo ' + data + ' | base64 -d > ' + filename).code !== 0) {
@@ -31,9 +43,9 @@ try {
   }
 
   createFile('secret.txt', secret)
-  createFile('ca.crt', caCRT)
-  createFile('user.crt', userCRT)
-  createFile('user.key', userKEY)
+  createFile('ca.crt', process.env.CA_CRT)
+  createFile('user.crt', process.env.USER_CRT)
+  createFile('user.key', process.env.USER_KEY)
   createFile('tls.key', tlsKey)
 
   addPermission('secret.txt')
