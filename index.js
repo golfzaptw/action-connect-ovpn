@@ -32,12 +32,14 @@ try {
   const createFile = (filename, data) => {
     exec('echo ' + data + ' | base64 -d >> ' + filename, err => {
       if (err !== null) {
-        console.log('exec error: ' + err)
+        core.setFailed('exec error: ' + err)
+        process.exit(1)
       }
     })
-    exec('chmod 600 ' + filename, err => {
+    exec('sudo chmod 600 ' + filename, err => {
       if (err !== null) {
-        console.log('exec error: ' + err)
+        core.setFailed('exec error: ' + err)
+        process.exit(1)
       }
     })
   }
@@ -54,7 +56,8 @@ try {
 
   exec(`sudo openvpn --config ${finalPath} --daemon`, err => {
     if (err !== null) {
-      console.log('exec error: ' + err)
+      core.setFailed('exec error: ' + err)
+      process.exit(1)
     }
   })
 
