@@ -9,8 +9,23 @@ try {
   // Get input defined in action metadata file
   const pingURL = core.getInput('PING_URL')
   const fileOVPN = core.getInput('FILE_OVPN')
-  const secret = 'dsdsds'
+  const secret = core.getInput('SECRET_ACCESS')
   const tlsKey = core.getInput('TLS_KEY')
+
+  if (process.env.CA_CRT == null) {
+    core.setFailed(`Can't get ca cert please add CA_CRT in secret`)
+    process.exit(1)
+  }
+
+  if (process.env.USER_CRT == null) {
+    core.setFailed(`Can't get user cert please add USER_CRT in secret`)
+    process.exit(1)
+  }
+
+  if (process.env.USER_KEY == null) {
+    core.setFailed(`Can't get user key please add USER_KEY in secret`)
+    process.exit(1)
+  }
 
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
@@ -27,21 +42,6 @@ try {
         process.exit(1)
       }
     })
-  }
-
-  if (process.env.CA_CRT == null) {
-    core.setFailed(`Can't get ca cert please add CA_CRT in secret`)
-    process.exit(1)
-  }
-
-  if (process.env.USER_CRT == null) {
-    core.setFailed(`Can't get user cert please add USER_CRT in secret`)
-    process.exit(1)
-  }
-
-  if (process.env.USER_KEY == null) {
-    core.setFailed(`Can't get user key please add USER_KEY in secret`)
-    process.exit(1)
   }
 
   if (secret !== '') {
