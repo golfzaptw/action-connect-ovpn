@@ -1,7 +1,6 @@
 const path = require('path')
-// const shell = require('shelljs')
+const exec = require('shelljs.exec')
 const ping = require('ping')
-const exec = require('child_process').exec
 // GITHUB
 const core = require('@actions/core')
 
@@ -30,21 +29,15 @@ try {
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
   const createFile = (filename, data) => {
-    const buff = Buffer.from(data, 'base64')
-    const text = buff.toString('utf-8')
-    exec('echo ' + text + ' >> ' + filename, err => {
-      if (err !== null) {
-        core.setFailed('exec error: ' + err)
+    if (exec('echo ' + data + ' |base64 -d >> ' + filename).code !== 0) {
+      core.setFailed(`Can't create file ${filename}`)
+      process.exit(1)
+    } else {
+      if (exec('sudo chmod 600 ' + filename).code !== 0) {
+        core.setFailed(`Can't set permission file ${filename}`)
         process.exit(1)
-      } else {
-        exec('sudo chmod 600 ' + filename, err => {
-          if (err !== null) {
-            core.setFailed('exec error: ' + err)
-            process.exit(1)
-          }
-        })
       }
-    })
+    }
   }
 
   if (secret !== '') {
@@ -57,12 +50,10 @@ try {
   createFile('user.crt', process.env.USER_CRT)
   createFile('user.key', process.env.USER_KEY)
 
-  exec(`sudo openvpn --config ${finalPath} --daemon`, err => {
-    if (err !== null) {
-      core.setFailed('exec error: ' + err)
-      process.exit(1)
-    }
-  })
+  if (exec(`sudo openvpn --config ${finalPath} --daemon`).code !== 0) {
+    core.setFailed(`Can't setup config ${finalPath}`)
+    process.exit(1)
+  }
 
   ping.promise
     .probe(pingURL, {

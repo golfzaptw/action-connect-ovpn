@@ -56,9 +56,8 @@ module.exports = require("os");
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
 const path = __webpack_require__(622)
-// const shell = require('shelljs')
+const exec = __webpack_require__(137)
 const ping = __webpack_require__(544)
-const exec = __webpack_require__(129).exec
 // GITHUB
 const core = __webpack_require__(470)
 
@@ -87,21 +86,15 @@ try {
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
   const createFile = (filename, data) => {
-    const buff = Buffer.from(data, 'base64')
-    const text = buff.toString('utf-8')
-    exec('echo ' + text + ' >> ' + filename, err => {
-      if (err !== null) {
-        core.setFailed('exec error: ' + err)
+    if (exec('echo ' + data + ' |base64 -d >> ' + filename).code !== 0) {
+      core.setFailed(`Can't create file ${filename}`)
+      process.exit(1)
+    } else {
+      if (exec('sudo chmod 600 ' + filename).code !== 0) {
+        core.setFailed(`Can't set permission file ${filename}`)
         process.exit(1)
-      } else {
-        exec('sudo chmod 600 ' + filename, err => {
-          if (err !== null) {
-            core.setFailed('exec error: ' + err)
-            process.exit(1)
-          }
-        })
       }
-    })
+    }
   }
 
   if (secret !== '') {
@@ -114,12 +107,10 @@ try {
   createFile('user.crt', process.env.USER_CRT)
   createFile('user.key', process.env.USER_KEY)
 
-  exec(`sudo openvpn --config ${finalPath} --daemon`, err => {
-    if (err !== null) {
-      core.setFailed('exec error: ' + err)
-      process.exit(1)
-    }
-  })
+  if (exec(`sudo openvpn --config ${finalPath} --daemon`).code !== 0) {
+    core.setFailed(`Can't setup config ${finalPath}`)
+    process.exit(1)
+  }
 
   ping.promise
     .probe(pingURL, {
@@ -146,6 +137,49 @@ try {
 /***/ (function(module) {
 
 module.exports = require("child_process");
+
+/***/ }),
+
+/***/ 137:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+"use strict";
+
+
+var cp = __webpack_require__(129)
+var normaliseOptions = __webpack_require__(877)
+
+function shelljsExec(command, options) {
+
+  options = normaliseOptions(options)
+
+  var error, stdout, stderr, code, ok
+
+  try {
+    error = null
+    stdout = cp.execSync(command, options)
+    stderr = ''
+    code = 0
+    ok = true
+  } catch (e) {
+    error = e
+    stdout = e.stdout
+    stderr = e.stderr
+    code = e.status || /* istanbul ignore next */ 1
+    ok = false
+  }
+
+  return {
+    error: error,
+    stdout: stdout,
+    stderr: stderr,
+    code: code,
+    ok: ok
+  }
+}
+
+module.exports = shelljsExec
+
 
 /***/ }),
 
@@ -3301,6 +3335,62 @@ MacParser.prototype._processFooter = function (line) {
 };
 
 module.exports = MacParser;
+
+
+/***/ }),
+
+/***/ 848:
+/***/ (function(module) {
+
+"use strict";
+
+
+module.exports = Object.freeze({
+  encoding: 'utf8',
+  silent: false
+})
+
+
+/***/ }),
+
+/***/ 877:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+"use strict";
+
+
+function isObject(obj) {
+  return obj !== null && typeof obj === 'object' && !Array.isArray(obj)
+}
+
+function toBoolean(bool) {
+  if (bool === 'false') bool = false
+  return !!bool
+}
+
+function normaliseOptions(options) {
+
+  var DEFAULTS = __webpack_require__(848)
+
+  if (!isObject(options)) {
+    options = {}
+  } else {
+
+    if (typeof options.silent !== 'undefined') {
+      options.silent = toBoolean(options.silent)
+    }
+  }
+
+  options = Object.assign({}, DEFAULTS, options)
+
+  if (options.silent && typeof options.stdio === 'undefined') {
+    options.stdio = 'pipe'
+  }
+
+  return options
+}
+
+module.exports = normaliseOptions
 
 
 /***/ }),
