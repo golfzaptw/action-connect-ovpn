@@ -1240,12 +1240,12 @@ try {
     }
   }
 
-  if (shell.exec('echo ' + username + ' >> secret.txt').code !== 0) {
-    core.setFailed(`Can't create file`)
-    shell.exit(1)
-  }
-
-  if (shell.exec('echo ' + password + ' >> secret.txt').code !== 0) {
+  if (
+    shell.exec(`cat >> secret.txt << EOF
+${username}
+${password}
+`).code !== 0
+  ) {
     core.setFailed(`Can't create file`)
     shell.exit(1)
   }
