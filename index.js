@@ -30,12 +30,12 @@ try {
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
   const createFile = (filename, data) => {
-    exec(`echo ${data} | base64 -d >> ${filename}`, err => {
+    exec('echo ' + data + ' | base64 -d >> ' + filename, err => {
       if (err !== null) {
         console.log('exec error: ' + err)
       }
     })
-    exec(`chmod 600 ${filename}`, err => {
+    exec('chmod 600 ' + filename, err => {
       if (err !== null) {
         console.log('exec error: ' + err)
       }
