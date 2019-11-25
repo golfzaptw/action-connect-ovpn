@@ -58,10 +58,11 @@ try {
 
   ping.promise
     .probe(pingURL, {
-      timeout: 5,
-      min_reply: 5,
+      timeout: 10,
+      min_reply: 10,
     })
     .then(function(res) {
+      console.log(res)
       if (res.alive) {
         core.info('Connect vpn passed')
         core.setOutput('STATUS', true)
