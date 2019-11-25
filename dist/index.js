@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 module.exports =
 /******/ (function(modules, runtime) { // webpackBootstrap
 /******/ 	"use strict";
@@ -1207,6 +1208,8 @@ function regExpEscape (s) {
 /***/ 104:
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
+
+
 const path = __webpack_require__(622)
 const shell = __webpack_require__(739)
 const ping = __webpack_require__(544)
@@ -1223,11 +1226,17 @@ try {
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
   const createFile = (filename, data) => {
-    shell.exec('echo ' + data + ' | base64 -d >> ' + filename)
+    if (shell.exec('echo ' + data + ' | base64 -d >> ' + filename).code !== 0) {
+      core.setFailed(`Can't create ${filename}`)
+      shell.exit(1)
+    }
   }
 
   const addPermission = filename => {
-    shell.chmod(600, filename)
+    if (shell.chmod(600, filename).code !== 0) {
+      core.setFailed(`Can't add permission ${filename}`)
+      shell.exit(1)
+    }
   }
 
   if (process.env.CA_CRT == null) {
