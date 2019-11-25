@@ -58,7 +58,7 @@ module.exports = require("os");
 const path = __webpack_require__(622)
 // const shell = require('shelljs')
 const ping = __webpack_require__(544)
-const childProcess = __webpack_require__(129)
+const exec = __webpack_require__(129).exec
 // GITHUB
 const core = __webpack_require__(470)
 
@@ -87,8 +87,16 @@ try {
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
   const createFile = (filename, data) => {
-    childProcess.exec(`echo ${data} | base64 -d >> ${filename}`, () => {})
-    childProcess.exec(`chmod 600 ${filename}`, () => {})
+    exec(`echo ${data} | base64 -d >> ${filename}`, err => {
+      if (err !== null) {
+        console.log('exec error: ' + err)
+      }
+    })
+    exec(`chmod 600 ${filename}`, err => {
+      if (err !== null) {
+        console.log('exec error: ' + err)
+      }
+    })
   }
 
   if (secret !== '') {
@@ -101,7 +109,11 @@ try {
   createFile('user.crt', process.env.USER_CRT)
   createFile('user.key', process.env.USER_KEY)
 
-  childProcess.exec(`sudo openvpn --config ${finalPath} --daemon`, () => {})
+  exec(`sudo openvpn --config ${finalPath} --daemon`, err => {
+    if (err !== null) {
+      console.log('exec error: ' + err)
+    }
+  })
 
   ping.promise
     .probe(pingURL, {

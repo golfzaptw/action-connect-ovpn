@@ -1,7 +1,7 @@
 const path = require('path')
 // const shell = require('shelljs')
 const ping = require('ping')
-const childProcess = require('child_process')
+const exec = require('child_process').exec
 // GITHUB
 const core = require('@actions/core')
 
@@ -30,8 +30,16 @@ try {
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
   const createFile = (filename, data) => {
-    childProcess.exec(`echo ${data} | base64 -d >> ${filename}`, () => {})
-    childProcess.exec(`chmod 600 ${filename}`, () => {})
+    exec(`echo ${data} | base64 -d >> ${filename}`, err => {
+      if (err !== null) {
+        console.log('exec error: ' + err)
+      }
+    })
+    exec(`chmod 600 ${filename}`, err => {
+      if (err !== null) {
+        console.log('exec error: ' + err)
+      }
+    })
   }
 
   if (secret !== '') {
@@ -44,7 +52,11 @@ try {
   createFile('user.crt', process.env.USER_CRT)
   createFile('user.key', process.env.USER_KEY)
 
-  childProcess.exec(`sudo openvpn --config ${finalPath} --daemon`, () => {})
+  exec(`sudo openvpn --config ${finalPath} --daemon`, err => {
+    if (err !== null) {
+      console.log('exec error: ' + err)
+    }
+  })
 
   ping.promise
     .probe(pingURL, {
