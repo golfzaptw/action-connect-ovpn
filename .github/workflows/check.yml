@@ -35,6 +35,10 @@ jobs:
           PING_URL: '10.56.7.99'
           FILE_OVPN: '.github/vpn/config.ovpn'
           SECRET_ACCESS: ${{ secrets.SECRET_ACCESS }}
+        env:
+          CA_CRT: ${{ secrets.CA_CRT }}
+          USER_CRT: ${{ secrets.USER_CRT }}
+          USER_KEY: ${{ secrets.USER_KEY }}
       - name: kill vpn
         if: always()
         run: sudo killall openvpn
