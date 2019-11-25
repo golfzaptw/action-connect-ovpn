@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const path = require('path')
 const shell = require('shelljs')
 const ping = require('ping')
@@ -16,7 +14,9 @@ try {
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
   const createFile = (filename, data) => {
-    if (shell.exec('echo ' + data + ' | base64 -d >> ' + filename).code !== 0) {
+    if (
+      shell.exec('echo ' + data + ' | base64 -d >> ' + filename + '').code !== 0
+    ) {
       core.setFailed(`Can't create ${filename}`)
       shell.exit(1)
     }

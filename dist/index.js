@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 module.exports =
 /******/ (function(modules, runtime) { // webpackBootstrap
 /******/ 	"use strict";
@@ -1208,8 +1207,6 @@ function regExpEscape (s) {
 /***/ 104:
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
-
-
 const path = __webpack_require__(622)
 const shell = __webpack_require__(739)
 const ping = __webpack_require__(544)
@@ -1226,7 +1223,9 @@ try {
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
   const createFile = (filename, data) => {
-    if (shell.exec('echo ' + data + ' | base64 -d >> ' + filename).code !== 0) {
+    if (
+      shell.exec('echo ' + data + ' | base64 -d >> ' + filename + '').code !== 0
+    ) {
       core.setFailed(`Can't create ${filename}`)
       shell.exit(1)
     }
