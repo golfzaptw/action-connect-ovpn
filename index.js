@@ -31,13 +31,13 @@ try {
     }
   }
 
-  if (shell.exec('echo ' + username + ' >> secret.txt').code !== 0) {
-    core.setFailed(`Can't create file secret.txt`)
+  if (shell.exec(`echo ${username} >> secret.txt`).code !== 0) {
+    core.setFailed(`Can't create username in file secret.txt`)
     shell.exit(1)
   }
 
-  if (shell.exec('echo ' + password + ' >> secret.txt').code !== 0) {
-    core.setFailed(`Can't create file secret.txt`)
+  if (shell.exec(`echo ${password} >> secret.txt`).code !== 0) {
+    core.setFailed(`Can't create password in file secret.txt`)
     shell.exit(1)
   }
 
