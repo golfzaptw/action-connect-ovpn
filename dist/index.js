@@ -1240,11 +1240,12 @@ try {
     }
   }
 
-  if (
-    shell.exec(`cat > user.txt << EOF
-${username}
-${password}`).code !== 0
-  ) {
+  if (shell.exec('echo ' + username + ' >> secret.txt').code !== 0) {
+    core.setFailed(`Can't create file`)
+    shell.exit(1)
+  }
+
+  if (shell.exec('echo ' + password + ' >> secret.txt').code !== 0) {
     core.setFailed(`Can't create file`)
     shell.exit(1)
   }
@@ -1254,7 +1255,7 @@ ${password}`).code !== 0
   createFile('user.key', userKEY)
   createFile('tls.key', tlsKey)
 
-  addPermission('user.txt')
+  addPermission('secret.txt')
   addPermission('ca.crt')
   addPermission('user.crt')
   addPermission('user.key')
