@@ -28,12 +28,12 @@ try {
     process.exit(1)
   }
 
-  const createFile = (filename, data) => {
-    if (shell.exec('echo ' + data + ' | base64 -d > ' + filename).code !== 0) {
-      core.setFailed(`Can't create file ${filename}`)
-      shell.exit(1)
-    }
-  }
+  // const createFile = (filename, data) => {
+  //   if (shell.exec('echo ' + data + ' | base64 -d > ' + filename).code !== 0) {
+  //     core.setFailed(`Can't create file ${filename}`)
+  //     shell.exit(1)
+  //   }
+  // }
 
   const addPermission = filename => {
     if (shell.chmod(600, filename).code !== 0) {
@@ -42,11 +42,35 @@ try {
     }
   }
 
-  createFile('secret.txt', secret)
-  createFile('ca.crt', `${process.env.CA_CRT}`)
-  createFile('user.crt', `${process.env.USER_CRT}`)
-  createFile('user.key', `${process.env.USER_KEY}`)
-  createFile('tls.key', tlsKey)
+  if (shell.exec('echo ' + secret + ' | base64 -d > secret.txt').code !== 0) {
+    core.setFailed(`Can't create file secret.txt`)
+    shell.exit(1)
+  }
+  if (
+    shell.exec('echo ' + process.env.CA_CRT + ' | base64 -d > ca.crt').code !==
+    0
+  ) {
+    core.setFailed(`Can't create file ca.crt`)
+    shell.exit(1)
+  }
+  if (
+    shell.exec('echo ' + process.env.USER_CRT + ' | base64 -d > user.crt')
+      .code !== 0
+  ) {
+    core.setFailed(`Can't create file user.crt`)
+    shell.exit(1)
+  }
+  if (
+    shell.exec('echo ' + process.env.USER_KEY + ' | base64 -d > user.key')
+      .code !== 0
+  ) {
+    core.setFailed(`Can't create file user.key`)
+    shell.exit(1)
+  }
+  if (shell.exec('echo ' + tlsKey + ' | base64 -d > tls.key').code !== 0) {
+    core.setFailed(`Can't create file tls.key`)
+    shell.exit(1)
+  }
 
   addPermission('secret.txt')
   addPermission('ca.crt')
