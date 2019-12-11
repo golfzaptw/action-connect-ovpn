@@ -2,8 +2,7 @@ FROM alpine:latest
 
 LABEL name="action-connect-vpn"
 
-RUN apt-get update && apt-get install -y
-RUN apt-get install openvpn
+RUN apk update && apk add -y && apk add openvpn
 
 COPY . .
 
