@@ -15,10 +15,12 @@ openvpn --config $1 --daemon
 
 while true; do
   ping -c1 $2
-  echo $?
-  if [[ $? -eq 0 ]]; then
+  if [ $? -eq 0 ] 
+  then
     echo 'connect success'
     exit 0
+  else
+    echo $?
   fi
 done
 }
