@@ -66,4 +66,4 @@ add_permission ca.crt
 add_permission user.crt
 add_permission user.key
 
-# connect_vpn $INPUT_FILE_OVPN $INPUT_PING_URL
+connect_vpn $INPUT_FILE_OVPN $INPUT_PING_URL
