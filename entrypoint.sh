@@ -29,25 +29,16 @@ echo $CA_CRT |base64 -d > ca.crt
 echo $USER_CRT |base64 -d > user.crt
 echo $USER_KEY |base64 -d > user.key
 
-if [ "$INPUT_FILE_OVPN" == "" ]
-then
+if [[ "$INPUT_FILE_OVPN" == "" ]]; then
   echo "Set the FILE_OVPN env variable."
   exit 1
-else
-  openvpn --config $INPUT_FILE_OVPN --daemon
 fi
+
+openvpn --config $INPUT_FILE_OVPN --daemon
 
 if [[ "$INPUT_PING_URL" == "" ]]; then
   echo "Set the PING_URL env variable."
   exit 1
 fi
 
-while true;
-do
-ping -c1 $INPUT_PING_URL
-if [ $? -eq 0 ]
-then
-    echo 'connect success'
-    exit 0
-fi
-done
+sh /vpn.sh
