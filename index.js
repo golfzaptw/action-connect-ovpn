@@ -132,29 +132,16 @@ try {
     const decodedString = Base64.decode(data)
     fs.writeFile(filename, decodedString, res => {
       if (res.code !== 0) {
-        console.log(res.message)
+        core.setFailed(res.message)
         process.exit(1)
       }
     })
     fs.chmod(filename, 600, res => {
       if (res.code !== 0) {
-        console.log(res.message)
+        core.setFailed(res.message)
         process.exit(1)
       }
     })
-
-    // if (file.code !== 0) {
-    //   core.setFailed(`Can't create file ${filename}`)
-    //   core.setFailed(file.stderr)
-    //   process.exit(1)
-    // } else {
-    //   const permission = await exec('sudo chmod 600 ' + filename)
-    //   if (permission.code !== 0) {
-    //     core.setFailed(`Can't set permission file ${filename}`)
-    //     core.setFailed(permission.stderr)
-    //     process.exit(1)
-    //   }
-    // }
   }
 
   if (secret !== '') {
@@ -167,6 +154,11 @@ try {
   createFile('ca.crt', process.env.CA_CRT)
   createFile('user.crt', process.env.USER_CRT)
   createFile('user.key', process.env.USER_KEY)
+
+  exec('cat user.key', () => {
+    console.log('cat file')
+  })
+  exec('cat secret.txt')
 
   startVPN(finalPath)
 
@@ -189,10 +181,14 @@ try {
 }
 
 async function startVPN(finalPath) {
-  const start = await exec(`sudo openvpn --config ${finalPath} --daemon`)
-  if (start.code !== 0) {
-    core.setFailed(`Can't setup config ${finalPath}`)
-    core.setFailed(start.stderr)
-    process.exit(1)
+  const sudoStart = await exec(`sudo openvpn --config ${finalPath} --daemon`)
+  if (sudoStart.code === 0) {
+    core.info(`Starting...`)
+  } else {
+    const start = await exec(`openvpn --config ${finalPath} --daemon`)
+    if (start.code !== 0) {
+      core.setFailed(start.stderr)
+      process.exit(1)
+    }
   }
 }
