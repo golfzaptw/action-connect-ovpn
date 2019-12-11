@@ -6,7 +6,7 @@ LABEL name="action-connect-vpn"
 RUN apt-get update && \
     apt-get -y install sudo && \
     sudo apt-get install openvpn -y && \
-    apt-get install iputils-ping
+    apt-get install iputils-ping -y
 
 COPY entrypoint.sh ./
 
