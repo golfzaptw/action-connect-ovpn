@@ -65,8 +65,10 @@ cd $INPUT_DEST_VPN
 echo 'Starting...'
 sudo openvpn --config $INPUT_NAME_VPN --daemon
 
+ping -c5 $INPUT_PING_URL
+
 while true; do
-  ping -c10 $INPUT_PING_URL
+  ping -c5 $INPUT_PING_URL
   if [ $? -eq 0 ]
   then
     echo 'connect success'
