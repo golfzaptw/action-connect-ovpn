@@ -23,6 +23,9 @@ inputs:
 outputs:
   STATUS:
     description: 'Status for check connect vpn'
+# runs:
+#   using: 'node12'
+#   main: 'dist/index.js'
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: 'docker'
+  image: 'Dockerfile'

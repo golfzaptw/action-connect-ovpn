@@ -28,15 +28,19 @@ try {
 
   const finalPath = path.resolve(process.cwd(), fileOVPN)
 
-  const createFile = (filename, data) => {
-    if (exec('echo ' + data + ' |base64 -d >> ' + filename).code !== 0) {
+  const createFile = async (filename, data) => {
+    const file = await exec('echo ' + data + ' |base64 -d >> ' + filename)
+    if (file.code !== 0) {
       core.setFailed(`Can't create file ${filename}`)
+      core.setFailed(permission.stderr)
       process.exit(1)
     } else {
-      if (exec('sudo chmod 600 ' + filename).code !== 0) {
+      const permission = await exec('sudo chmod 600 ' + filename)
+      if (permission.code !== 0) {
         core.setFailed(`Can't set permission file ${filename}`)
+        core.setFailed(permission.stderr)
         process.exit(1)
-      }
+      }else if()
     }
   }
 
@@ -51,7 +55,8 @@ try {
   createFile('user.crt', process.env.USER_CRT)
   createFile('user.key', process.env.USER_KEY)
 
-  if (exec(`sudo openvpn --config ${finalPath} --daemon`).code !== 0) {
+  const startVPN = await exec(`sudo openvpn --config ${finalPath} --daemon`)
+  if (startVPN.code !== 0) {
     core.setFailed(`Can't setup config ${finalPath}`)
     process.exit(1)
   }
