@@ -181,12 +181,12 @@ try {
 }
 
 async function startVPN(finalPath) {
-  const sudoStart = await exec(`sudo openvpn --config ${finalPath} --daemon`)
-  if (sudoStart.code === 0) {
+  const start = await exec(`openvpn --config ${finalPath} --daemon`)
+  if (start.code === 0) {
     core.info(`Starting...`)
   } else {
-    const start = await exec(`openvpn --config ${finalPath} --daemon`)
-    if (start.code !== 0) {
+    const sudoStart = await exec(`sudo openvpn --config ${finalPath} --daemon`)
+    if (sudoStart.code !== 0) {
       core.setFailed(start.stderr)
       process.exit(1)
     }
