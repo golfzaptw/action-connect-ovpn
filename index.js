@@ -126,7 +126,7 @@ try {
   //   process.exit(1)
   // }
 
-  // const finalPath = path.resolve(process.cwd(), fileOVPN)
+  const finalPath = path.resolve(process.cwd(), fileOVPN)
 
   const createFile = async (filename, data) => {
     const decodedString = Base64.decode(data)
