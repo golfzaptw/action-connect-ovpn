@@ -6,6 +6,6 @@ RUN yarn
 RUN apk add --update --no-cache openvpn
 
 # Copy logic
-COPY index.js ./
 
-ENTRYPOINT [ "node","/index.js" ]
+ADD entrypoint.sh /entrypoint.sh
+ENTRYPOINT [ "/entrypoint.sh" ]
