@@ -51,7 +51,7 @@ create_file $USER_KEY $INPUT_DEST_VPN/user.key
 
 cd $INPUT_DEST_VPN
 pwd
-ll
+ls -la
 openvpn --config $INPUT_NAME_VPN --daemon
 
 while true; do
