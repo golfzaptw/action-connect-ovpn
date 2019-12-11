@@ -11,7 +11,8 @@ add_permission() {
 }
 
 connect_vpn() {
-openvpn --config $1/config.ovpn --daemon
+    cd $1
+    openvpn --config config.ovpn --daemon
 
 while true; do
   ping -c1 $2
