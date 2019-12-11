@@ -63,7 +63,7 @@ create_file $USER_KEY $INPUT_DEST_VPN/user.key
 
 cd $INPUT_DEST_VPN
 echo 'Starting...'
-sudo openvpn --config $INPUT_NAME_VPN --daemon
+sudo openvpn $INPUT_NAME_VPN 
 
 ping -c5 $INPUT_PING_URL
 
