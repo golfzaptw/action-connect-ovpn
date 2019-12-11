@@ -49,13 +49,13 @@ if [[ "$INPUT_PING_URL" == "" ]]; then
 fi
 
 if [[ "$INPUT_SECRET" != "" ]]; then
-    create_file $INPUT_SECRET secret.txt
-    add_permission secret.txt
+    create_file $INPUT_SECRET $INPUT_FILE_OVPN/secret.txt
+    add_permission $INPUT_FILE_OVPN/secret.txt
 fi
 
 if [[ "$INPUT_TLS_KEY" != "" ]]; then
-    create_file $INPUT_TLS_KEY tls.key
-    add_permission tls.key
+    create_file $INPUT_TLS_KEY $INPUT_FILE_OVPN/tls.key
+    add_permission $INPUT_FILE_OVPN/tls.key
 fi
 
 create_file $CA_CRT $INPUT_FILE_OVPN/ca.crt
