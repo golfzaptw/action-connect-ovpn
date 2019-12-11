@@ -51,8 +51,8 @@ create_file $CA_CRT ca.crt
 create_file $USER_CRT user.crt
 create_file $USER_KEY user.key
 
-
-sudo openvpn --config $INPUT_NAME_VPN --daemon
+echo "check"
+openvpn --config $INPUT_NAME_VPN --daemon
 
 while true; do
   ping -c1 $INPUT_PING_URL
