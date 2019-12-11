@@ -37,19 +37,17 @@ else
   openvpn --config $INPUT_FILE_OVPN --daemon
 fi
 
-if [ "$INPUT_PING_URL" == "" ]
-then
+if [[ "$INPUT_PING_URL" == "" ]]; then
   echo "Set the PING_URL env variable."
   exit 1
-else
-    while true;
-    do
-    ping -c1 $INPUT_PING_URL
-    if [ $? -eq 0 ]
-    then
-        echo 'connect success'
-        exit 0
-    fi
-    done
 fi
 
+while true;
+do
+ping -c1 $INPUT_PING_URL
+if [ $? -eq 0 ]
+then
+    echo 'connect success'
+    exit 0
+fi
+done
