@@ -4,23 +4,7 @@ set -eu
 
 create_file() {
   echo $1 |base64 -d > $2
-}
-
-add_permission() {
-  chmod +x $1
-}
-
-connect_vpn() {
-    openvpn --config $1 --daemon
-
-while true; do
-  ping -c1 $2
-  if [ $? -eq 0 ] 
-  then
-    echo 'connect success'
-    exit 0
-  fi
-done
+  chmod 600 $2
 }
 
 if [[ -z "$CA_CRT" ]]; then
@@ -67,9 +51,12 @@ create_file $CA_CRT $INPUT_DEST_VPN/ca.crt
 create_file $USER_CRT $INPUT_DEST_VPN/user.crt
 create_file $USER_KEY $INPUT_DEST_VPN/user.key
 
-add_permission $INPUT_DEST_VPN/ca.crt
-add_permission $INPUT_DEST_VPN/user.crt
-add_permission $INPUT_DEST_VPN/user.key
-add_permission $INPUT_DEST_VPN/$INPUT_NAME_VPN
+openvpn --config $INPUT_DEST_VPN/$INPUT_NAME_VPN --daemon
 
-connect_vpn $INPUT_DEST_VPN/$INPUT_NAME_VPN $INPUT_PING_URL
+while true; do
+  ping -c1 $INPUT_PING_URL
+  if [[ $? -eq 0 ]]; then
+    echo 'connect success'
+    exit 0
+  fi
+done
