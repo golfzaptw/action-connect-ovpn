@@ -4,7 +4,11 @@ set -eu
 
 create_file() {
   echo $1 |base64 -d > $2
-  chmod +x $2
+  set_permission $2
+}
+
+set_permission() {
+  chmod +x $1
 }
 
 if [[ -z "$CA_CRT" ]]; then
@@ -50,7 +54,7 @@ create_file $USER_CRT $INPUT_DEST_VPN/user.crt
 create_file $USER_KEY $INPUT_DEST_VPN/user.key
 
 cd $INPUT_DEST_VPN
-pwd
+set_permission $INPUT_NAME_VPN
 ls -la
 openvpn --config $INPUT_NAME_VPN --daemon
 
