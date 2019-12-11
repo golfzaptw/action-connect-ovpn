@@ -10,4 +10,6 @@ RUN apt-get update && \
 
 COPY entrypoint.sh ./
 
+VOLUME /dev/net/
+
 ENTRYPOINT ["sh","/entrypoint.sh" ]
