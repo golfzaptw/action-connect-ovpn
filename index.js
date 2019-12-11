@@ -181,6 +181,7 @@ try {
 }
 
 async function startVPN(finalPath) {
+  core.info(process.platform)
   const start = await exec(`openvpn --config ${finalPath} --daemon`)
   if (start.code === 0) {
     core.info(`Starting...`)
