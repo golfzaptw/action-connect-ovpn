@@ -11,41 +11,49 @@ set_permission() {
   chmod +x $1
 }
 
-if [[ -z "$CA_CRT" ]]; then
+if [ -z "$CA_CRT" ]
+then
   echo "Set the CA_CRT env variable."
   exit 1
 fi
 
-if [[ -z "$USER_CRT" ]]; then
+if [ -z "$USER_CRT" ]
+then
   echo "Set the USER_CRT env variable."
   exit 1
 fi
 
-if [[ -z "$USER_KEY" ]]; then
+if [ -z "$USER_KEY" ]
+then
   echo "Set the USER_KEY env variable."
   exit 1
 fi
 
-if [[ "$INPUT_DEST_VPN" == "" ]]; then
+if [ -z "$INPUT_DEST_VPN" ]
+then
   echo "Set the DEST_VPN with variable."
   exit 1
 fi
 
-if [[ "$INPUT_NAME_VPN" == "" ]]; then
+if [ -z "$INPUT_NAME_VPN" ]
+then
   echo "Set the NAME_VPN with variable."
   exit 1
 fi
 
-if [[ "$INPUT_PING_URL" == "" ]]; then
+if [ -z "$INPUT_PING_URL" ]
+then
   echo "Set the PING_URL with variable."
   exit 1
 fi
 
-if [[ "$INPUT_SECRET" != "" ]]; then
+if [ "$INPUT_SECRET" != "" ]
+then
     create_file $INPUT_SECRET $INPUT_DEST_VPN/secret.txt
 fi
 
-if [[ "$INPUT_TLS_KEY" != "" ]]; then
+if [ "$INPUT_TLS_KEY" != "" ]
+then
     create_file $INPUT_TLS_KEY $INPUT_DEST_VPN/tls.key
 fi
 
@@ -58,7 +66,8 @@ sudo openvpn --config config.ovpn --daemon
 
 while true; do
   ping -c10 $INPUT_PING_URL
-  if [[ $? -eq 0 ]]; then
+  if [ $? -eq 0 ]
+  then
     echo 'connect success'
     exit 0
   fi
