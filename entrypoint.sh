@@ -4,7 +4,7 @@ set -eu
 
 create_file() {
   echo $1 |base64 -d > $2
-  chmod 600 $2
+  chmod +x $2
 }
 
 if [[ -z "$CA_CRT" ]]; then
@@ -37,24 +37,23 @@ if [[ "$INPUT_PING_URL" == "" ]]; then
   exit 1
 fi
 
-cd $INPUT_DEST_VPN
-
 if [[ "$INPUT_SECRET" != "" ]]; then
-    create_file $INPUT_SECRET secret.txt
+    create_file $INPUT_SECRET $INPUT_DEST_VPN/secret.txt
 fi
 
 if [[ "$INPUT_TLS_KEY" != "" ]]; then
-    create_file $INPUT_TLS_KEY tls.key
+    create_file $INPUT_TLS_KEY $INPUT_DEST_VPN/tls.key
 fi
 
-create_file $CA_CRT ca.crt
-create_file $USER_CRT user.crt
-create_file $USER_KEY user.key
+create_file $CA_CRT $INPUT_DEST_VPN/ca.crt
+create_file $USER_CRT $INPUT_DEST_VPN/user.crt
+create_file $USER_KEY $INPUT_DEST_VPN/user.key
 
+cd $INPUT_DEST_VPN
 openvpn --config $INPUT_NAME_VPN --daemon
 
 while true; do
-  ping -c10 $INPUT_PING_URL
+  ping -c1 $INPUT_PING_URL
   if [[ $? -eq 0 ]]; then
     echo 'connect success'
     exit 0
