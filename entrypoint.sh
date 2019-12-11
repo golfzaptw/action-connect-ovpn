@@ -53,7 +53,7 @@ cd $INPUT_DEST_VPN
 openvpn --config $INPUT_NAME_VPN --daemon
 
 while true; do
-  ping -c1 $INPUT_PING_URL
+  ping -c10 $INPUT_PING_URL
   if [[ $? -eq 0 ]]; then
     echo 'connect success'
     exit 0
