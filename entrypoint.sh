@@ -13,12 +13,12 @@ if [[ -z "$CA_CRT" ]]; then
 fi
 
 if [[ -z "$USER_CRT" ]]; then
-  echo "Set the CA_CRT env variable."
+  echo "Set the USER_CRT env variable."
   exit 1
 fi
 
 if [[ -z "$USER_KEY" ]]; then
-  echo "Set the CA_CRT env variable."
+  echo "Set the USER_KEY env variable."
   exit 1
 fi
 
@@ -49,7 +49,8 @@ create_file $CA_CRT $INPUT_DEST_VPN/ca.crt
 create_file $USER_CRT $INPUT_DEST_VPN/user.crt
 create_file $USER_KEY $INPUT_DEST_VPN/user.key
 
-openvpn --config $INPUT_DEST_VPN/$INPUT_NAME_VPN --daemon
+cd $INPUT_DEST_VPN
+sudo openvpn --config $INPUT_NAME_VPN --daemon
 
 while true; do
   ping -c1 $INPUT_PING_URL
