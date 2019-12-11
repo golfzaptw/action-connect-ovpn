@@ -61,7 +61,7 @@ create_file $CA_CRT $INPUT_DEST_VPN/ca.crt
 create_file $USER_CRT $INPUT_DEST_VPN/user.crt
 create_file $USER_KEY $INPUT_DEST_VPN/user.key
 
-sudo openvpn --config $INPUT_DEST_VPN/$INPUT_NAME_VPN --daemon
+sudo openvpn --config $INPUT_DEST_VPN/$INPUT_NAME_VPN --daemon --verify-x509-name
 
 while true; do
   ping -c10 $INPUT_PING_URL
