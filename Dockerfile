@@ -8,4 +8,4 @@ RUN apk add --update --no-cache openvpn
 # Copy logic
 
 COPY entrypoint.sh /entrypoint.sh
-ENTRYPOINT [ "/entrypoint.sh" ]
+ENTRYPOINT ["/entrypoint.sh" ]
