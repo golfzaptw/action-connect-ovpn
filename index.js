@@ -155,12 +155,6 @@ try {
   createFile('user.crt', process.env.USER_CRT)
   createFile('user.key', process.env.USER_KEY)
 
-  exec('cat user.key', () => {
-    console.log('cat file')
-  })
-  exec('cat secret.txt')
-  exec('ls -la')
-
   startVPN(finalPath)
 
   ping.promise
@@ -182,7 +176,6 @@ try {
 }
 
 async function startVPN(finalPath) {
-  core.info(process.platform)
   const start = await exec(`openvpn --config ${finalPath} --daemon`)
   if (start.code !== 0) {
     core.setFailed(start.stderr)
