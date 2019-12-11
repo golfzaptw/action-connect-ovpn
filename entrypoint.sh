@@ -70,6 +70,6 @@ create_file $USER_KEY $INPUT_DEST_VPN/user.key
 add_permission $INPUT_DEST_VPN/ca.crt
 add_permission $INPUT_DEST_VPN/user.crt
 add_permission $INPUT_DEST_VPN/user.key
-add_permission $INPUT_DEST_VPN/$NAME_VPN
+add_permission $INPUT_DEST_VPN/$INPUT_NAME_VPN
 
-connect_vpn $INPUT_DEST_VPN/$NAME_VPN $INPUT_PING_URL
+connect_vpn $INPUT_DEST_VPN/$INPUT_NAME_VPN $INPUT_PING_URL
