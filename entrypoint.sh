@@ -11,7 +11,7 @@ add_permission() {
 }
 
 connect_vpn() {
-sudo openvpn --config $1 --daemon
+openvpn --config $1/config.ovpn --daemon
 
 while true; do
   ping -c1 $2
@@ -58,9 +58,9 @@ if [[ "$INPUT_TLS_KEY" != "" ]]; then
     add_permission tls.key
 fi
 
-create_file $CA_CRT ca.crt
-create_file $USER_CRT user.crt
-create_file $USER_KEY user.key
+create_file $CA_CRT $INPUT_FILE_OVPN/ca.crt
+create_file $USER_CRT $INPUT_FILE_OVPN/user.crt
+create_file $USER_KEY $INPUT_FILE_OVPN/user.key
 
 add_permission ca.crt
 add_permission user.crt
