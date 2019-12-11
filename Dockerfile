@@ -1,8 +1,4 @@
-FROM node:12-alpine
-
-# Copy package.json and install
-COPY package.json ./
-RUN yarn
+FROM alpine:latest
 RUN apk add --update --no-cache openvpn
 
 # Copy logic
