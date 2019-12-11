@@ -11,8 +11,7 @@ add_permission() {
 }
 
 connect_vpn() {
-    cd $1
-    openvpn --config config.ovpn --daemon
+    openvpn --config $1 --daemon
 
 while true; do
   ping -c1 $2
@@ -39,8 +38,13 @@ if [[ -z "$USER_KEY" ]]; then
   exit 1
 fi
 
-if [[ "$INPUT_FILE_OVPN" == "" ]]; then
-  echo "Set the FILE_OVPN with variable."
+if [[ "$INPUT_DEST_VPN" == "" ]]; then
+  echo "Set the DEST_VPN with variable."
+  exit 1
+fi
+
+if [[ "$INPUT_NAME_VPN" == "" ]]; then
+  echo "Set the NAME_VPN with variable."
   exit 1
 fi
 
@@ -50,22 +54,22 @@ if [[ "$INPUT_PING_URL" == "" ]]; then
 fi
 
 if [[ "$INPUT_SECRET" != "" ]]; then
-    create_file $INPUT_SECRET $INPUT_FILE_OVPN/secret.txt
-    add_permission $INPUT_FILE_OVPN/secret.txt
+    create_file $INPUT_SECRET $INPUT_DEST_VPN/secret.txt
+    add_permission $INPUT_DEST_VPN/secret.txt
 fi
 
 if [[ "$INPUT_TLS_KEY" != "" ]]; then
-    create_file $INPUT_TLS_KEY $INPUT_FILE_OVPN/tls.key
-    add_permission $INPUT_FILE_OVPN/tls.key
+    create_file $INPUT_TLS_KEY $INPUT_DEST_VPN/tls.key
+    add_permission $INPUT_DEST_VPN/tls.key
 fi
 
-create_file $CA_CRT $INPUT_FILE_OVPN/ca.crt
-create_file $USER_CRT $INPUT_FILE_OVPN/user.crt
-create_file $USER_KEY $INPUT_FILE_OVPN/user.key
+create_file $CA_CRT $INPUT_DEST_VPN/ca.crt
+create_file $USER_CRT $INPUT_DEST_VPN/user.crt
+create_file $USER_KEY $INPUT_DEST_VPN/user.key
 
-add_permission $INPUT_FILE_OVPN/ca.crt
-add_permission $INPUT_FILE_OVPN/user.crt
-add_permission $INPUT_FILE_OVPN/user.key
-add_permission $INPUT_FILE_OVPN/config.ovpn
+add_permission $INPUT_DEST_VPN/ca.crt
+add_permission $INPUT_DEST_VPN/user.crt
+add_permission $INPUT_DEST_VPN/user.key
+add_permission $INPUT_DEST_VPN/$NAME_VPN
 
-connect_vpn $INPUT_FILE_OVPN $INPUT_PING_URL
+connect_vpn $INPUT_DEST_VPN/$NAME_VPN $INPUT_PING_URL
