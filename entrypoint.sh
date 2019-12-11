@@ -62,8 +62,9 @@ create_file $CA_CRT $INPUT_FILE_OVPN/ca.crt
 create_file $USER_CRT $INPUT_FILE_OVPN/user.crt
 create_file $USER_KEY $INPUT_FILE_OVPN/user.key
 
-add_permission ca.crt
-add_permission user.crt
-add_permission user.key
+add_permission $INPUT_FILE_OVPN/ca.crt
+add_permission $INPUT_FILE_OVPN/user.crt
+add_permission $INPUT_FILE_OVPN/user.key
+add_permission $INPUT_FILE_OVPN/config.ovpn
 
 connect_vpn $INPUT_FILE_OVPN $INPUT_PING_URL
