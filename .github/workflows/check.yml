@@ -39,7 +39,7 @@ jobs:
           USER_KEY: ${{ secrets.USER_KEY }}
       - name: Check Connect VPN
         run: echo ${{ steps.connect_vpn.outputs.STATUS }}
-  build:
+  cc:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -55,4 +55,4 @@ jobs:
           USER_CRT: ${{ secrets.USER_CRT }}
           USER_KEY: ${{ secrets.USER_KEY }}
       - name: Check Connect VPN
-        run: echo ${{ steps.connect_vpn.outputs.STATUS }}        
+        run: echo ${{ steps.connect_vpn.outputs.STATUS }}
