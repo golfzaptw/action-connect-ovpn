@@ -159,6 +159,7 @@ try {
     console.log('cat file')
   })
   exec('cat secret.txt')
+  exec('ls -la')
 
   startVPN(finalPath)
 
@@ -183,13 +184,10 @@ try {
 async function startVPN(finalPath) {
   core.info(process.platform)
   const start = await exec(`openvpn --config ${finalPath} --daemon`)
-  if (start.code === 0) {
-    core.info(`Starting...`)
+  if (start.code !== 0) {
+    core.setFailed(start.stderr)
+    process.exit(1)
   } else {
-    const sudoStart = await exec(`sudo openvpn --config ${finalPath} --daemon`)
-    if (sudoStart.code !== 0) {
-      core.setFailed(start.stderr)
-      process.exit(1)
-    }
+    core.info('Starting...')
   }
 }
