@@ -20,7 +20,8 @@ while true; do
     echo 'connect success'
     exit 0
   else
-    echo $?
+    echo 'show me'
+    echo $@
   fi
 done
 }
