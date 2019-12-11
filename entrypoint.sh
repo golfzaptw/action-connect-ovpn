@@ -51,12 +51,10 @@ create_file $CA_CRT ca.crt
 create_file $USER_CRT user.crt
 create_file $USER_KEY user.key
 
-echo "check"
 openvpn --config $INPUT_NAME_VPN --daemon
 
 while true; do
-  ping -c1 $INPUT_PING_URL
-  echo "$?"
+  ping -c10 $INPUT_PING_URL
   if [[ $? -eq 0 ]]; then
     echo 'connect success'
     exit 0
