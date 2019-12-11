@@ -11,7 +11,7 @@ add_permission() {
 }
 
 connect_vpn() {
-openvpn --config $1 --daemon
+sudo openvpn --config $1 --daemon
 
 while true; do
   ping -c1 $2
@@ -19,9 +19,6 @@ while true; do
   then
     echo 'connect success'
     exit 0
-  else
-    echo 'show me'
-    echo $@
   fi
 done
 }
