@@ -5,7 +5,7 @@ LABEL name="action-connect-vpn"
 
 RUN apt-get update && \
     apt-get -y install sudo && \
-    apt-get install openvpn
+    sudo apt-get install openvpn -y
 
 COPY entrypoint.sh ./
 
