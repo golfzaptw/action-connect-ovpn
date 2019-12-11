@@ -39,12 +39,10 @@ fi
 
 if [[ "$INPUT_SECRET" != "" ]]; then
     create_file $INPUT_SECRET $INPUT_DEST_VPN/secret.txt
-    add_permission $INPUT_DEST_VPN/secret.txt
 fi
 
 if [[ "$INPUT_TLS_KEY" != "" ]]; then
     create_file $INPUT_TLS_KEY $INPUT_DEST_VPN/tls.key
-    add_permission $INPUT_DEST_VPN/tls.key
 fi
 
 create_file $CA_CRT $INPUT_DEST_VPN/ca.crt
