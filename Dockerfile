@@ -2,8 +2,6 @@ FROM alpine:latest
 
 LABEL name="action-connect-vpn"
 
-RUN apk update && apk add openvpn
-
-COPY . .
+COPY entrypoint.sh ./
 
 ENTRYPOINT ["sh","/entrypoint.sh" ]

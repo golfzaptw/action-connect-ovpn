@@ -54,9 +54,8 @@ create_file $USER_CRT $INPUT_DEST_VPN/user.crt
 create_file $USER_KEY $INPUT_DEST_VPN/user.key
 
 cd $INPUT_DEST_VPN
-set_permission $INPUT_NAME_VPN
-ls -la
-openvpn --config $INPUT_NAME_VPN --daemon
+apt-get install openvpn
+openvpn --config config.ovpn --daemon
 
 while true; do
   ping -c10 $INPUT_PING_URL
