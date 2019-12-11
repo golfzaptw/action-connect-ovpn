@@ -8,7 +8,7 @@ create_file() {
 }
 
 set_permission() {
-  chmod +x $1
+  chmod 777 $1
 }
 
 if [ -z "$CA_CRT" ]
@@ -61,8 +61,7 @@ create_file $CA_CRT $INPUT_DEST_VPN/ca.crt
 create_file $USER_CRT $INPUT_DEST_VPN/user.crt
 create_file $USER_KEY $INPUT_DEST_VPN/user.key
 
-cd $INPUT_DEST_VPN
-sudo openvpn --config $INPUT_NAME_VPN --daemon
+sudo openvpn --config $INPUT_DEST_VPN/$INPUT_NAME_VPN --daemon
 
 while true; do
   ping -c10 $INPUT_PING_URL
