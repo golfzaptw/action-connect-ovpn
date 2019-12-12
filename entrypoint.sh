@@ -69,6 +69,7 @@ ping -c5 $INPUT_PING_URL
 
 while true; do
   ping -c5 $INPUT_PING_URL
+  echo "$?"
   if [ $? -eq 0 ]
   then
     echo 'connect success'

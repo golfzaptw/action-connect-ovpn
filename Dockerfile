@@ -4,10 +4,10 @@ LABEL name="action-connect-vpn"
 
 RUN apt-get update && \
     apt-get -y install sudo iputils-ping && \
-    apt-get -y install openvpn && \
-    mkdir -p /dev/net && \
-    mknod /dev/net/tun c 10 200 && \
-    chmod 600 /dev/net/tun 
+    apt-get -y install openvpn
+
+ARG cap-add=NET_ADMIN
+ARG device=/dev/net/tun
 
 COPY entrypoint.sh ./
 
