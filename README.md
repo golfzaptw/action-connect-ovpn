@@ -91,7 +91,7 @@ format username password
 username-vpn
 password-vpn
 
-4. If open vpn have tag `<tls></tls>` please repeat step 1 and 2 for the TLS records.
+4. If open vpn have tag `<tls></tls>` please repeat step 1 and 2 for the TLS records. Add this to .ovpn file:
 ```
 tls-auth tls.key 1
 ```
