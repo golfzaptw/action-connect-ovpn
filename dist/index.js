@@ -92,14 +92,16 @@ try {
   }
 
   const finalPath = path.resolve(process.cwd(), fileOVPN)
+  const OVPNFileFolder = finalPath.split('/').slice(0, -1).join('/')
 
   const createFile = (filename, data) => {
-    if (exec('echo ' + data + ' |base64 -d >> ' + filename).code !== 0) {
-      core.setFailed(`Can't create file ${filename}`)
+    const outputFile = `${OVPNFileFolder}/${filename}`
+    if (exec(`echo ${data} | base64 -d >> ${outputFile}`).code !== 0) {
+      core.setFailed(`Can't create file ${outputFile}`)
       process.exit(1)
     } else {
-      if (exec('sudo chmod 600 ' + filename).code !== 0) {
-        core.setFailed(`Can't set permission file ${filename}`)
+      if (exec(`sudo chmod 600 ${outputFile}`).code !== 0) {
+        core.setFailed(`Can't set permission file ${outputFile}`)
         process.exit(1)
       }
     }
