@@ -92,3 +92,6 @@ username-vpn
 password-vpn
 
 4. If open vpn have tag `<tls></tls>` please repeat step 1 and 2 for the TLS records.
+```
+tls-auth tls.key 1
+```
